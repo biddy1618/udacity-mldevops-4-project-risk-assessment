@@ -1,25 +1,48 @@
-from flask import Flask, session, jsonify, request
-import pandas as pd
-import numpy as np
-import pickle
+'''
+Module for scoring ML model.
+
+Author: Dauren Baitursyn
+Date: 10.09.22
+'''
 import os
-from sklearn import metrics
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
 import json
+import pickle
+
+import pandas as pd
+from pathlib import Path
+from sklearn import metrics
+
+with open('config.json', 'r') as f:
+    config = json.load(f)
+
+model_path = Path.joinpath(Path.cwd(), config['output_model_path'])
+test_data_path = Path.joinpath(Path.cwd(), config['test_data_path'])
 
 
-
-#################Load config.json and get path variables
-with open('config.json','r') as f:
-    config = json.load(f) 
-
-dataset_csv_path = os.path.join(config['output_folder_path']) 
-test_data_path = os.path.join(config['test_data_path']) 
-
-
-#################Function for model scoring
 def score_model():
-    #this function should take a trained model, load test data, and calculate an F1 score for the model relative to the test data
-    #it should write the result to the latestscore.txt file
+    '''Function for model scoring.'''
+    num_fields = [
+        'lastmonth_activity',
+        'lastyear_activity',
+        'number_of_employees']
+    target = 'exited'
 
+    test_df = pd.DataFrame()
+    for f in os.listdir(test_data_path):
+        tmp_df = pd.read_csv(Path.joinpath(test_data_path, f))
+        test_df = test_df.append(tmp_df)
+
+    y_test = test_df.loc[:, target].values.ravel()
+    X_test = test_df.loc[:, num_fields].values
+
+    with open(Path.joinpath(model_path, 'trainedmodel.pkl'), 'rb') as f:
+        lb = pickle.load(f)
+
+    y_pred = lb.predict(X_test)
+    f1_score = metrics.f1_score(y_test, y_pred)
+    with open(Path.joinpath(model_path, 'latestscore.txt'), 'w') as f:
+        f.write(str(f1_score))
+
+
+if __name__ == '__main__':
+    score_model()

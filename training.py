@@ -4,12 +4,12 @@ Module for training an ML model.
 Author: Dauren Baitursyn
 Date: 10.09.22
 '''
-import pandas as pd
-from sklearn.linear_model import LogisticRegression
 import json
 import pickle
 
+import pandas as pd
 from pathlib import Path
+from sklearn.linear_model import LogisticRegression
 
 with open('config.json', 'r') as f:
     config = json.load(f)

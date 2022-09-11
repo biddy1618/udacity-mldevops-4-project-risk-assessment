@@ -5,10 +5,10 @@ Author: Dauren Baitursyn
 Date: 10.09.22
 '''
 import json
-import pickle
 
 import pandas as pd
 from pathlib import Path
+from pickle import dump
 from sklearn.linear_model import LogisticRegression
 
 with open('config.json', 'r') as f:
@@ -43,7 +43,7 @@ def train_model():
     lg.fit(X, y)
 
     with open(Path.joinpath(model_path, 'trainedmodel.pkl'), 'wb') as f:
-        pickle.dump(lg, f)
+        dump(lg, f)
 
 
 if __name__ == '__main__':

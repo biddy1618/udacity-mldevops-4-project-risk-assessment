@@ -1,27 +1,40 @@
-from flask import Flask, session, jsonify, request
-import pandas as pd
-import numpy as np
-import pickle
-import os
-from sklearn import metrics
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
+'''Module for deploying model with latest score and ingested files.'''
 import json
+import shutil
+
+from pathlib import Path
 
 
+with open('config.json', 'r') as f:
+    config = json.load(f)
 
-##################Load config.json and correct path variable
-with open('config.json','r') as f:
-    config = json.load(f) 
-
-dataset_csv_path = os.path.join(config['output_folder_path']) 
-prod_deployment_path = os.path.join(config['prod_deployment_path']) 
+prod_deployment_path = Path.joinpath(
+    Path.cwd(), config['prod_deployment_path'])
+output_folder_path = Path.joinpath(Path.cwd(), config['output_folder_path'])
+model_path = Path.joinpath(Path.cwd(), config['output_model_path'])
 
 
-####################function for deployment
-def store_model_into_pickle(model):
-    #copy the latest pickle file, the latestscore.txt value, and the ingestfiles.txt file into the deployment directory
-        
-        
-        
+def store_model_into_pickle():
+    '''Function for deployment.'''
 
+    # copy the model
+    shutil.copyfile(
+        Path.joinpath(model_path, 'trainedmodel.pkl'),
+        Path.joinpath(prod_deployment_path, 'trainedmodel.pkl')
+    )
+
+    # copy the score
+    shutil.copyfile(
+        Path.joinpath(model_path, 'latestscore.txt'),
+        Path.joinpath(prod_deployment_path, 'latestscore.txt')
+    )
+
+    # copy the ingested files file
+    shutil.copyfile(
+        Path.joinpath(output_folder_path, 'ingestedfiles.txt'),
+        Path.joinpath(prod_deployment_path, 'ingestedfiles.txt')
+    )
+
+
+if __name__ == '__main__':
+    store_model_into_pickle()

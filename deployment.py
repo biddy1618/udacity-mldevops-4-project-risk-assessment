@@ -1,4 +1,9 @@
-'''Module for deploying model with latest score and ingested files.'''
+'''
+Module for deploying model with latest score and ingested files.
+
+Author: Dauren Baitursyn
+Date: 11.09.22
+'''
 import json
 import shutil
 

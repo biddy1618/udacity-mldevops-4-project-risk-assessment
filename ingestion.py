@@ -8,11 +8,9 @@ Date: 10.09.22
 import os
 import json
 
-# from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
-# import numpy as np
 
 
 with open('config.json', 'r') as f:

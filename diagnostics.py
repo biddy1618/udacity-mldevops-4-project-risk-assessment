@@ -23,7 +23,6 @@ prod_deployment_path = Path.joinpath(
     Path.cwd(), config['prod_deployment_path'])
 dataset_csv_path = Path.joinpath(
     Path.cwd(), config['output_folder_path'])
-test_data_path = os.path.join(config['test_data_path'])
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger()

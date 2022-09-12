@@ -20,7 +20,12 @@ test_data_path = Path.joinpath(Path.cwd(), config['test_data_path'])
 
 
 def score_model():
-    '''Function for model scoring.'''
+    '''
+    Function for model scoring.
+
+    Returns:
+        float: F1 score of the deployed model.
+    '''
     num_fields = [
         'lastmonth_activity',
         'lastyear_activity',
@@ -42,6 +47,8 @@ def score_model():
     f1_score = metrics.f1_score(y_test, y_pred)
     with open(Path.joinpath(model_path, 'latestscore.txt'), 'w') as f:
         f.write(str(f1_score))
+
+    return f1_score
 
 
 if __name__ == '__main__':

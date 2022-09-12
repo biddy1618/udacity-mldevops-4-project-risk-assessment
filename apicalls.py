@@ -1,20 +1,27 @@
+'''
+Script for calling API endpoints and saving the content
+to file 'apireturns.txt'.
+
+Author: Dauren Baitursyn
+Date: 12.09.22
+'''
 import requests
+from pathlib import Path
 
-#Specify a URL that resolves to your workspace
-URL = "http://127.0.0.1/"
-
-
-
-#Call each API endpoint and store the responses
-response1 = #put an API call here
-response2 = #put an API call here
-response3 = #put an API call here
-response4 = #put an API call here
-
-#combine all API responses
-responses = #combine reponses here
-
-#write the responses to your workspace
+URL = 'http://127.0.0.1'
+PORT = '8000'
 
 
+response1 = requests.post(
+    f'{URL}:{PORT}/prediction?dataset=testdata/testdata.csv').text
+response2 = requests.get(f'{URL}:{PORT}/scoring').text
+response3 = requests.get(f'{URL}:{PORT}/summarystats').text
+response4 = requests.get(f'{URL}:{PORT}/diagnostics').text
 
+responses = 'prediction:\n' + response1
+responses += '\nscoring:\n' + response2
+responses += '\nsummarystats:\n' + response3
+responses += '\ndiagnostics:\n' + response4
+
+with open(Path.joinpath(Path.cwd(), 'apireturns.txt'), 'w') as f:
+    f.write(responses)

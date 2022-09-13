@@ -14,14 +14,14 @@ from sklearn.linear_model import LogisticRegression
 with open('config.json', 'r') as f:
     config = json.load(f)
 
-dataset_csv_path = Path.joinpath(Path.cwd(), config['output_folder_path'])
+output_path = Path.joinpath(Path.cwd(), config['output_folder_path'])
 model_path = Path.joinpath(Path.cwd(), config['output_model_path'])
 
 
 def train_model():
     '''Function for training the model.'''
 
-    df = pd.read_csv(Path.joinpath(dataset_csv_path, 'finaldata.csv'))
+    df = pd.read_csv(Path.joinpath(output_path, 'finaldata.csv'))
 
     # Categorical variable `corporation` is unique, thus we drop it
     # cat_fields = ['corporation']

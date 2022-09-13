@@ -5,7 +5,6 @@ Author: Dauren Baitursyn
 Date: 12.09.22
 '''
 from flask import Flask, Response, request, jsonify
-# from flask import session
 from pathlib import Path
 import pandas as pd
 import json

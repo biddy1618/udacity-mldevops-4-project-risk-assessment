@@ -19,9 +19,8 @@ from pathlib import Path
 with open('config.json', 'r') as f:
     config = json.load(f)
 
-prod_deployment_path = Path.joinpath(
-    Path.cwd(), config['prod_deployment_path'])
-dataset_csv_path = Path.joinpath(
+prod_path = Path.joinpath(Path.cwd(), config['prod_deployment_path'])
+input_path = Path.joinpath(
     Path.cwd(), config['output_folder_path'])
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -45,8 +44,7 @@ def model_predictions(data):
 
     X = data.loc[:, num_fields].values
 
-    with open(Path.joinpath(prod_deployment_path, 'trainedmodel.pkl'), 'rb') \
-            as f:
+    with open(Path.joinpath(prod_path, 'trainedmodel.pkl'), 'rb') as f:
         model = load(f)
 
     pred = model.predict(X)
@@ -126,7 +124,7 @@ def outdated_packages_list():
 
 if __name__ == '__main__':
 
-    data = pd.read_csv(Path.joinpath(dataset_csv_path, 'finaldata.csv'))
+    data = pd.read_csv(Path.joinpath(input_path, 'finaldata.csv'))
 
     pred = model_predictions(data)
     logger.info(f'Predictions by the model:\n{pred}\n')

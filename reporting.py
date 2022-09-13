@@ -4,7 +4,6 @@ Module for reporting.
 Author: Dauren Baitursyn
 Date: 12.09.22
 '''
-import os
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -21,18 +20,23 @@ with open('config.json', 'r') as f:
     config = json.load(f)
 
 
-test_data_path = Path.joinpath(Path.cwd(), config['test_data_path'])
 model_path = Path.joinpath(Path.cwd(), config['output_model_path'])
+output_path = Path.joinpath(Path.cwd(), config['output_folder_path'])
+test_path = Path.joinpath(Path.cwd(), config['test_data_path'])
 
 
-def score_model():
-    '''Function for reporting.'''
+def plot_confusion_matrix(production=False, name='confusionmatrix.png'):
+    '''Function for plotting confusion matrix.
 
-    data = pd.DataFrame()
+    Args:
+        name (str, optional): Name of the file to save confusion matrix in.
+            Defaults to 'confusionmatrix.png'.
+    '''
     target = 'exited'
-    for f in os.listdir(test_data_path):
-        tmp_df = pd.read_csv(Path.joinpath(test_data_path, f))
-        data = data.append(tmp_df)
+    if production:
+        data = pd.read_csv(Path.joinpath(output_path, 'finaldata.csv'))
+    else:
+        data = pd.read_csv(Path.joinpath(test_path, 'testdata.csv'))
 
     y = data.loc[:, target].values.ravel()
     pred = model_predictions(data)
@@ -41,8 +45,8 @@ def score_model():
     ax = plt.gca()
     sns.heatmap(cm, cmap="Blues", annot=True, cbar=False, ax=ax)
     ax.set(xlabel="Predicted", ylabel="True")
-    plt.savefig(Path.joinpath(model_path, 'confusionmatrix.png'))
+    plt.savefig(Path.joinpath(model_path, name))
 
 
 if __name__ == '__main__':
-    score_model()
+    plot_confusion_matrix()

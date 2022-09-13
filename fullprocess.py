@@ -49,7 +49,7 @@ if not set(ingested_files).issuperset(source_files):
 
 
 # Deciding whether to proceed, part 2
-# if you found model drift, you should proceed. otherwise, do end the process 
+# if you found model drift, you should proceed. otherwise, do end the process
 # here
 
 
@@ -58,10 +58,3 @@ if not set(ingested_files).issuperset(source_files):
 
 # Diagnostics and reporting
 # run diagnostics.py and reporting.py for the re-deployed model
-
-
-
-
-
-
-

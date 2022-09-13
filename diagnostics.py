@@ -43,7 +43,7 @@ def model_predictions(data):
         'lastyear_activity',
         'number_of_employees']
 
-    X = data[num_fields]
+    X = data.loc[:, num_fields].values
 
     with open(Path.joinpath(prod_deployment_path, 'trainedmodel.pkl'), 'rb') \
             as f:

@@ -4,8 +4,6 @@ Module for ingestion.
 Author: Dauren Baitursyn
 Date: 10.09.22
 '''
-
-import os
 import json
 
 from pathlib import Path
@@ -28,10 +26,10 @@ def merge_multiple_dataframe():
     df = pd.DataFrame()
     ingested_files = []
 
-    for f in os.listdir(input_folder_path):
-        tmp_df = pd.read_csv(Path.joinpath(input_folder_path, f))
-        df = df.append(tmp_df)
-        ingested_files.append(f)
+    for f in input_folder_path.iterdir():
+        tmp_df = pd.read_csv(f)
+        df = pd.concat([df, tmp_df])
+        ingested_files.append(f.name)
 
     df.drop_duplicates(inplace=True)
 

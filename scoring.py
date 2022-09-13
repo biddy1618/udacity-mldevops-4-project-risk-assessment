@@ -4,7 +4,6 @@ Module for scoring ML model.
 Author: Dauren Baitursyn
 Date: 10.09.22
 '''
-import os
 import json
 import pickle
 
@@ -33,9 +32,9 @@ def score_model():
     target = 'exited'
 
     test_df = pd.DataFrame()
-    for f in os.listdir(test_data_path):
-        tmp_df = pd.read_csv(Path.joinpath(test_data_path, f))
-        test_df = test_df.append(tmp_df)
+    for f in test_data_path.iterdir():
+        tmp_df = pd.read_csv(f)
+        test_df = pd.concat([test_df, tmp_df])
 
     y_test = test_df.loc[:, target].values.ravel()
     X_test = test_df.loc[:, num_fields].values

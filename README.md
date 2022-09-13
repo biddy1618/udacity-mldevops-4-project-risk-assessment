@@ -49,3 +49,16 @@ The following are other files that are included in your starter files:
 
 * `requirements.txt`, a text file and records the current versions of all the modules that your scripts use
 * `config.json`, a data file that contains names of files that will be used for configuration of your ML Python scripts
+
+## Notes
+
+For the first run: `ingestion.py` -> `training.py` -> `scoring.py` -> `deployment.py` -> `diagnostics.py` -> `app.py` -> `reporting.py`.
+
+Order of execution:
+1) `ingestion.py` - composes new file at `output_folder_path` - `finaldata.csv` and `ingestedfiles.txt`.
+2) `scoring.py` - takes model at `prod_deployment_path` - `trainedmodel.pkl`, and scores data at `output_folder_path` - `finaldata.csv`, and saves the score at `output_model_path` - `latestscore.txt`.
+3) `training.py` - trains new model for the data at `output_folder_path` - `finaldata.csv` and saves it at `output_model_path` - `trainedmodel.pkl`.
+4) `deployment.py` - copies model and score from `output_model_path` - `trainedmodel.pkl` and `latestscore.txt` - and list of ingested files at `output_folder_path` - `ingestedfiles.txt` to deployment folder `prod_deployment_path`.
+5) `reporting.py` - composes confusion matrix from production model at `prod_deployment_path` for the file at `output_folder_path` and saves it in `output_model_path`.
+6) `app.py` - starts Flask API for the model.
+7) `apicall.py` - generates output file for by calling API endpoints.
